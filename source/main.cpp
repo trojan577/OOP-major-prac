@@ -53,14 +53,13 @@ int main(int argc, char **argv)
 	// Move window print window shifts cursor before printing
 	mvwprintw(win1, win1_y_max/2 - 1, win1_x_max/2 - 9, "Centre of window 1");	
 	mvwprintw(win2, win2_y_max/2 - 1, win2_x_max/2 - 9, "Centre of window 2");	
-	mvwprintw(win3, win1_y_max/2 - 1, xMax/2 - 9, "Centre of window 3");	
+	mvwprintw(win3, win1_y_max/2 - 1, xMax/2 - 9, 		"Centre of window 3");	
 
 	wrefresh(win1);
 	wrefresh(win2);
 	wrefresh(win3);
-
 	
-	getch();
+	getch();		// Pause until user input
 	endwin();		// Closes stdscr and returns the terminal
 
 	return 0;
