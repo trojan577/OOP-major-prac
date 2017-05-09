@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 {
 	initscr(); 				// Creates stdscr
 	cbreak();				// Allows CTRL+C and such to force quit program
-	keypad(stdscr, TRUE);	// Allows up dwn left right delete bcksp etc.
+	keypad(stdscr, TRUE);			// Allows up dwn left right delete bcksp etc.
 
 	int yMax, xMax;
 	getmaxyx(stdscr, yMax, xMax);
@@ -77,17 +77,17 @@ int main(int argc, char **argv)
 
 	// Sets up a small box in the second window (win2) 
 	mvwprintw(win2, 1, win2_x_max/2 - 9, "--------------------");
-    mvwprintw(win2, 2, win2_x_max/2 - 9, "|                  |");
-    mvwprintw(win2, 3, win2_x_max/2 - 9, "|                  |");
-    mvwprintw(win2, 4, win2_x_max/2 - 9, "|                  |");
-    mvwprintw(win2, 5, win2_x_max/2 - 9, "|   @@@            |");
-    mvwprintw(win2, 6, win2_x_max/2 - 9, "|   @              |");
-    mvwprintw(win2, 7, win2_x_max/2 - 9, "|   @@@            |");
-    mvwprintw(win2, 8, win2_x_max/2 - 9, "|                  |");
-    mvwprintw(win2, 9, win2_x_max/2 - 9, "|                  |");
+	mvwprintw(win2, 2, win2_x_max/2 - 9, "|                  |");
+	mvwprintw(win2, 3, win2_x_max/2 - 9, "|                  |");
+	mvwprintw(win2, 4, win2_x_max/2 - 9, "|                  |");
+	mvwprintw(win2, 5, win2_x_max/2 - 9, "|   @@@            |");
+	mvwprintw(win2, 6, win2_x_max/2 - 9, "|   @              |");
+	mvwprintw(win2, 7, win2_x_max/2 - 9, "|   @@@            |");
+	mvwprintw(win2, 8, win2_x_max/2 - 9, "|                  |");
+	mvwprintw(win2, 9, win2_x_max/2 - 9, "|                  |");
 	mvwprintw(win2, 10, win2_x_max/2 - 9,"--------------------");	
 	//the actual character that moves around the room	
-	mvwprintw(win2, 3				, win2_x_max/2,		"*"					);		
+	mvwprintw(win2, 3, win2_x_max/2, "*");		
 
 	mvwprintw(win3, win1_y_max/2 - 1, xMax/2 - 9, 		"Centre of window 3");
 
