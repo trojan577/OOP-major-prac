@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 	width = 	xMax / 2;	// Integer division
 
 	// Creating 3 windows with edges that line up
-	WINDOW *win1 = newwin(terminal.y/2, terminal.x/2, 		0,	 	0);				// Top left window
+	WINDOW *win1 = newwin(terminal.y/2, terminal.x/2, 		0,	 	0);			// Top left window
 	WINDOW *win2 = newwin(terminal.y/2, terminal.x/2, 		0, 		xMax/2);		// Top right window
 	WINDOW *win3 = newwin(terminal.y/2, 2*(xMax/2), 		yMax/2, 0);				// Bottom window
 
@@ -61,10 +61,9 @@ int main(int argc, char **argv)
 	wrefresh(win2);
 	wrefresh(win3);
 
-	werase(win3);				// Erases everything in the window
-	box(win3, 0, 0);			// Redrawing the box outline
-
-	keypad(stdscr, true);		// Grabbing input via stdscr (can use individual window)
+	werase(win3);		// Erases everything in the window
+	box(win3, 0, 0);	// Redrawing the box outline
+	keypad(stdscr, true);	// Grabbing input via stdscr (can use individual window)
 
 	string options[3] = {"Play", "Quit", "Help"};
 
@@ -88,9 +87,9 @@ sizeMax getWinSize(WINDOW *win)
 
 void initialize()
 {
-	initscr(); 				// Creates stdscr
-	cbreak();				// Allows CTRL+C and such to force quit program
-	noecho();				// Stops user input printing on the screen
+	initscr(); 			// Creates stdscr
+	cbreak();			// Allows CTRL+C and such to force quit program
+	noecho();			// Stops user input printing on the screen
 	curs_set(0);			// Stops cursor from showing
 	// resize_term(40, 120);	// Allocates terminal size (y, x)
 }
@@ -116,7 +115,7 @@ int menu(WINDOW *win, string options[])
 			wrefresh(win);
 		}
 
-		choice = wgetch(stdscr); // Waiting for user input
+		choice = wgetch(stdscr); 	// Waiting for user input
 
 		switch(choice)
 		{
