@@ -5,12 +5,9 @@ Have implemented a nice menu in main.cpp
 Compile using the makefile and run using ./a.out
 
 eg.
-
 	make
-	
 	./a.out
 	
-
 Then use the arrow keys to make a selection and press enter to lock in your choice.
 
 Need a player/character class with methods to move up, down, left, and right.
