@@ -5,6 +5,7 @@ Have implemented a nice menu in main.cpp
 Compile using the makefile and run using ./a.out
 
 eg.
+
 	make
 	./a.out
 	
