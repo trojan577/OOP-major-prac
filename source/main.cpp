@@ -1,6 +1,9 @@
 /* This is a test main for the ncurses library */
 #include <iostream>
 #include <ncurses.h>
+#include <cstdlib>		// For exit()
+#include "equipment.h"
+
 
 using namespace std;
 
@@ -17,11 +20,21 @@ sizeMax getWinSize(WINDOW *);
 /* Function to print the menu items and return the selection */
 int menu(WINDOW *, string[]);
 
-/* initialize the screen */
+/* Initialize the screen */
 void initialize();
+
+/* Function that prints help to win3 */
+void printHelp(WINDOW *, sizeMax);
+
+/* Function to draw equipment and inventory returns window array for inventory */
+WINDOW** drawLoadout(WINDOW*, sizeMax);
+
+/* Function to refresh all windows */
+void refreshWins(WINDOW**, int);
 
 int main(int argc, char **argv)
 {	
+	/*=====SETUP BEGIN=====*/
 	// Setting up ncurses parameters
 	initialize();
 
@@ -36,42 +49,96 @@ int main(int argc, char **argv)
 	width = 	xMax / 2;	// Integer division
 
 	// Creating 3 windows with edges that line up
-	WINDOW *win1 = newwin(terminal.y/2, terminal.x/2, 		0,	 	0);			// Top left window
-	WINDOW *win2 = newwin(terminal.y/2, terminal.x/2, 		0, 		xMax/2);		// Top right window
-	WINDOW *win3 = newwin(terminal.y/2, 2*(xMax/2), 		yMax/2, 0);				// Bottom window
+	WINDOW **win = new WINDOW*[3];
+	win[0] = newwin(terminal.y/2, terminal.x/2, 		0,	 	0);			// Top left window
+	win[1] = newwin(terminal.y/2, terminal.x/2, 		0, 		xMax/2);		// Top right window
+	win[2] = newwin(terminal.y/2, 2*(xMax/2), 		yMax/2, 	0);				// Bottom window
 
 	refresh();			// Refreshing stdscr for windows to be drawn
 
 	// Getting each windows maximum x and y size (win3 just fills the rest of the screen)
-	struct sizeMax win1Size = getWinSize(win1);
-	struct sizeMax win2Size = getWinSize(win2);
+	struct sizeMax win1Size = getWinSize(win[0]);
+	struct sizeMax win2Size = getWinSize(win[1]);
+	struct sizeMax win3Size = getWinSize(win[2]);
 
 	// Drawing the box outline for each window
-	box(win1, 0, 0);
-	box(win2, 0, 0);
-	box(win3, 0, 0);
+	box(win[0], 0, 0);
+	box(win[1], 0, 0);
+	box(win[2], 0, 0);
 
-	// Move window print window shifts cursor before printing
-	mvwprintw(win1, win1Size.y/2 - 1, win1Size.x/2 - 9	, "Centre of window 1");
-	mvwprintw(win2, win2Size.y/2 - 1, win2Size.x/2 - 9	, "Centre of window 2");
-	mvwprintw(win3, win1Size.y/2 - 1, xMax/2 - 9		, "Centre of window 3");
+	refreshWins(win, 3);
 
-	// Refreshing all windows to show the text and the boxes
-	wrefresh(win1);
-	wrefresh(win2);
-	wrefresh(win3);
-
-	werase(win3);		// Erases everything in the window
-	box(win3, 0, 0);	// Redrawing the box outline
+	werase(win[2]);		// Erases everything in the window
+	box(win[2], 0, 0);	// Redrawing the box outline
 	keypad(stdscr, true);	// Grabbing input via stdscr (can use individual window)
+	/*=====SETUP END=====*/
 
+	// Menu section
+	bool finished = false;
 	string options[3] = {"Play", "Quit", "Help"};
+	int selected;
+	do
+	{
+		werase(win[2]);
+		box(win[2], 0, 0);
+		selected = menu(win[2], options);
+		mvwprintw(win[2], 1, 1, "You chose: %s", options[selected].c_str());	// for debugging	
+		wrefresh(win[2]);
+		switch (selected)
+		{	
+			case 0:			// They chose play
+				finished = true;
+				break;
+			case 1:			// They chose quit
+				endwin();
+				exit(0);
+			case 2:			// They chose help
+				printHelp(win[2], win3Size);
+				break;
+		}
 
-	int selected = menu(win3, options);
-	mvwprintw(win3, 1, 1, "You chose: %s", options[selected].c_str());
-	wrefresh(win3);
+	}while(!finished);
+	
+	// Getting data for inventory boxes
+	WINDOW ** inventory = drawLoadout(win[0], win1Size); 
+	refreshWins(win, 3);
 
-	getch();		// Pause until user input
+	// Main game loop
+	finished = false;
+	bool runOnce = true;
+	char c;
+	while(!finished)
+	{
+		// To quit the game press q at anytime
+		c = wgetch(stdscr);
+		if(c == 'q')
+		{
+			finished = true;
+		}
+
+		if(runOnce == true)
+		{
+			werase(win[2]);
+			box(win[2], 0, 0);
+			mvwprintw(win[2], 1, 1, "You start with a butterknife");
+
+			Knife butterknife("butterknife", "=---", 1, 0.5);
+
+			mvwprintw(inventory[0], 1, 1, butterknife.getSymbol().c_str());
+			refreshWins(inventory, 6);
+			refreshWins(win, 3);	
+
+			wgetch(stdscr);
+			mvwprintw(win[2], 2, 1, "and a spoon");
+
+			Knife spoon("spoon", "O---", 1, 1);
+			mvwprintw(inventory[1], 1, 1, spoon.getSymbol().c_str());
+			refreshWins(inventory, 6);
+			refreshWins(win, 3);
+			runOnce = false;
+		}
+	}
+
 	endwin();		// Closes stdscr and returns the terminal
 
 	return 0;
@@ -137,4 +204,48 @@ int menu(WINDOW *win, string options[])
 		}
 	}
 	return selection;
+}
+
+void printHelp(WINDOW *win, sizeMax win3Size)
+{
+	werase(win);
+	box(win, 0, 0);
+	mvwprintw(win, 1, 1, "The #1 aim of this game is to have fun");
+	mvwprintw(win, 2, 1, "The #2 aim of this game is to fight as many monsters in the makeshift");
+	mvwprintw(win, 3, 1, "dungeon without dying. There are items and weapons that you may find useful");
+	mvwprintw(win, 4, 1, "on the ground as you traverse the map.");
+	mvwprintw(win, 6, 1, "Use up, down, left and right to move around.");
+	mvwprintw(win, win3Size.y/2+5, win3Size.x/2-14, "Press any key to continue...");
+	wrefresh(win);
+	wgetch(stdscr);			// Wait for the user to press something
+}
+
+WINDOW** drawLoadout(WINDOW* win, sizeMax winSize)
+{
+	mvwprintw(win, 1, 1, "¯\\_( )_/¯");
+	mvwprintw(win, 2, 1, "    |    ");
+	mvwprintw(win, 3, 1, "    |    ");
+	mvwprintw(win, 4, 1, "   / \\   ");
+	mvwprintw(win, 5, 1, " _/   \\_ ");
+
+	int nInv = 8;
+	WINDOW** inventory = new WINDOW*[nInv];
+
+	for(unsigned int i = 0; i < nInv; ++i)
+	{
+		// 5 high 5 across
+		if(i < 4)
+			*(inventory + i) = newwin(3, 6, 1+3*i, 12);
+		else
+			*(inventory + i) = newwin(3, 6, 1+3*(i%4), 12+6);
+		box(inventory[i], 0, 0);
+		wrefresh(*(inventory + i ));
+	}
+	return inventory;
+}
+
+void refreshWins(WINDOW **wins, int n)
+{	
+	for(unsigned int i = 0; i < n; ++i)
+		wrefresh(*(wins + i));
 }
