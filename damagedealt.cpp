@@ -1,5 +1,5 @@
 #include <iostream>
-#include <stdlib.h> 
+#include <cstdlib> 
 using namespace std;
 
 class Damage {
@@ -23,7 +23,7 @@ Damage::Damage (int a, int b int c){
 }
 
 int main() {
-	//if weapon that is selected is dagger {
+															//if weapon that is selected is dagger {
 	Damage dagger (2,5,75); 								// these later on can be coded to fetch values from some sort of storage (min damage, max damage, chanceof success)
 
 	cout << "damage" << dagger.damagegiven() << endl; 		// as a test prints out the damage that would be dealt
@@ -34,8 +34,9 @@ int main() {
 		}
 	}
 	//}
-
-
-
-
 };
+
+int main() {
+
+	
+}
