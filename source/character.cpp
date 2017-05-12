@@ -1,8 +1,11 @@
 #include "character.h"
 
-Player::Player(){}
+Character::Character(int health) {
+	if(health <= 100)
+		this->health = health;
+}
 
-Player::Player(std::string name)
+Player::Player(std::string name, int health) : Character(health)
 {
 	this->name = name;
 }

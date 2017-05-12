@@ -3,7 +3,7 @@
 #include <ncurses.h>
 #include <cstdlib>		// For exit()
 #include "equipment.h"
-
+#include "character.h"
 
 using namespace std;
 
@@ -32,6 +32,12 @@ WINDOW** drawLoadout(WINDOW*, sizeMax);
 /* Function to refresh all windows */
 void refreshWins(WINDOW**, int);
 
+/* Function to get string input from user */
+string getString();
+
+/* Function to delete windows */
+void deleteWin(WINDOW**, int);
+
 int main(int argc, char **argv)
 {	
 	/*=====SETUP BEGIN=====*/
@@ -52,7 +58,7 @@ int main(int argc, char **argv)
 	WINDOW **win = new WINDOW*[3];
 	win[0] = newwin(terminal.y/2, terminal.x/2, 		0,	 	0);			// Top left window
 	win[1] = newwin(terminal.y/2, terminal.x/2, 		0, 		xMax/2);		// Top right window
-	win[2] = newwin(terminal.y/2, 2*(xMax/2), 		yMax/2, 	0);				// Bottom window
+	win[2] = newwin(terminal.y/2, 2*(xMax/2), 		yMax/2, 	0);			// Bottom window
 
 	refresh();			// Refreshing stdscr for windows to be drawn
 
@@ -120,6 +126,10 @@ int main(int argc, char **argv)
 		{
 			werase(win[2]);
 			box(win[2], 0, 0);
+
+			string name;// some way of getting a name from the user
+
+			Player player1(name, 101);
 			mvwprintw(win[2], 1, 1, "You start with a butterknife");
 
 			Knife butterknife("butterknife", "=---", 1, 0.5);
@@ -132,16 +142,19 @@ int main(int argc, char **argv)
 			mvwprintw(win[2], 2, 1, "and a spoon");
 
 			Knife spoon("spoon", "O---", 1, 1);
+		
 			mvwprintw(inventory[1], 1, 1, spoon.getSymbol().c_str());
 			refreshWins(inventory, 6);
 			refreshWins(win, 3);
 			runOnce = false;
 		}
 	}
+	deleteWin(inventory, 6);
+	deleteWin(win, 3);
 
 	endwin();		// Closes stdscr and returns the terminal
 
-	return 0;
+	return 0; 
 }
 
 sizeMax getWinSize(WINDOW *win)
@@ -248,4 +261,27 @@ void refreshWins(WINDOW **wins, int n)
 {	
 	for(unsigned int i = 0; i < n; ++i)
 		wrefresh(*(wins + i));
+}
+
+string getString()
+{
+	echo();			// Lets the user see what they have typed
+	string input;
+	char c;
+	do
+	{
+		
+		c = getchar();
+		input.push_back(c);
+
+	}while(c != '\n');		// While not pressed enter	
+	noecho();
+}
+
+void deleteWin(WINDOW** win, int n)
+{
+	for(unsigned int i = 0; i < n; ++i)
+	{
+		delwin(*(win + i));	
+	}
 }

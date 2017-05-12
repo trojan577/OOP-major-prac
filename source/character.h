@@ -7,6 +7,7 @@
 
 class Character{
 public:
+    Character(int health);
 	//pure virtual functions
     virtual int attack() = 0;
     virtual void move() = 0;
@@ -22,8 +23,7 @@ class Player : public Character{
                 
     
 public:
-    Player();
-    Player(std::string name);
+    Player(std::string name, int health);
     int isHealth();         	// tells user current health
     std::vector<std::string> isEquipment();  // returns list of items in qeuiptment vector
     int attack();       		// attacks in some way
@@ -46,4 +46,4 @@ public:
     bool miss();
 };
 
-#endif	//CHARACTER_H
+#endif	// CHARACTER_H

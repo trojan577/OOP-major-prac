@@ -1,7 +1,10 @@
 all: mainfiles
 
-mainfiles: main.cpp
+mainfiles:
 	g++ main.cpp character.cpp equipment.cpp -lncurses
 
+test: 
+	g++ test.cpp character.cpp equipment.cpp -o test
+
 clean: 
-	rm -f a.out
+	rm -f a.out test
