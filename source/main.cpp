@@ -34,7 +34,7 @@ WINDOW** drawLoadout(WINDOW*, sizeMax);
 void refreshWins(WINDOW**, int);
 
 /* Function to get string input from user */
-string getString();
+string getString(WINDOW *);
 
 /* Function to delete windows */
 void deleteWin(WINDOW**, int);
@@ -155,6 +155,14 @@ int main(int argc, char **argv)
 			mvwprintw(win[2], 4, 1, "This is the map");
 			refreshWins(win, 3);
 
+			// Creating a character
+			mvwprintw(win[2], 6, 1, "Please enter a name for your character: ");
+			refreshWins(win, 3);
+			string cName = getString(win[2]);
+			Player p1(cName, 100);
+			mvwprintw(win[0], 1, 1, p1.getName().c_str());
+			refreshWins(win, 3);
+
 			runOnce = false;
 		}
 
@@ -245,11 +253,11 @@ void printHelp(WINDOW *win, sizeMax win3Size)
 
 WINDOW** drawLoadout(WINDOW* win, sizeMax winSize)
 {
-	mvwprintw(win, 1, 1, "¯\\_( )_/¯");
-	mvwprintw(win, 2, 1, "    |    ");
+	mvwprintw(win, 2, 1, "¯\\_( )_/¯");
 	mvwprintw(win, 3, 1, "    |    ");
-	mvwprintw(win, 4, 1, "   / \\   ");
-	mvwprintw(win, 5, 1, " _/   \\_ ");
+	mvwprintw(win, 4, 1, "    |    ");
+	mvwprintw(win, 5, 1, "   / \\   ");
+	mvwprintw(win, 6, 1, " _/   \\_ ");
 
 	int nInv = 8;
 	WINDOW** inventory = new WINDOW*[nInv];
@@ -273,19 +281,19 @@ void refreshWins(WINDOW **wins, int n)
 		wrefresh(*(wins + i));
 }
 
-string getString()
+string getString(WINDOW* win)
 {
 	echo();			// Lets the user see what they have typed
 	string input;
 	char c;
 	do
 	{
-		
-		c = getchar();
+		c = wgetch(win);
 		input.push_back(c);
 
 	}while(c != '\n');		// While not pressed enter	
 	noecho();
+	return input;
 }
 
 void deleteWin(WINDOW** win, int n)

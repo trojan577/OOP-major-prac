@@ -30,6 +30,7 @@ public:
     void move();        		// moves charactor, may need either fucntion for each direction
                         		// or take keyvoard input as argument
     bool miss();       			// returns whther or not they hit based in missChance
+    std::string getName();           // returns the players name
 private:
 	std::vector<std::string> equipment;	// starts with weapon called Knife
                 						// buidins vecor of length 1, can increase length (unintelligible-jonathan)

@@ -59,3 +59,13 @@ follow?
 bool Enemy::miss(){
 
 }
+
+int Player::isHealth()
+{
+	return health;
+}
+
+std::string Player::getName()
+{
+	return name;
+}
