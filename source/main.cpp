@@ -4,6 +4,7 @@
 #include <cstdlib>		// For exit()
 #include "equipment.h"
 #include "character.h"
+#include "map.h"
 
 using namespace std;
 
@@ -146,8 +147,17 @@ int main(int argc, char **argv)
 			mvwprintw(inventory[1], 1, 1, spoon.getSymbol().c_str());
 			refreshWins(inventory, 6);
 			refreshWins(win, 3);
+
+			// Making a map
+			Map map(40, 15, 3);
+			map.createMap();
+			map.displayMap(win[1], 1);
+			mvwprintw(win[2], 4, 1, "This is the map");
+			refreshWins(win, 3);
+
 			runOnce = false;
 		}
+
 	}
 	deleteWin(inventory, 6);
 	deleteWin(win, 3);

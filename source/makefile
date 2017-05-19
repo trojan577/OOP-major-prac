@@ -1,7 +1,9 @@
+.PHONY: all test mainfiles clean
+
 all: mainfiles
 
 mainfiles:
-	g++ main.cpp character.cpp equipment.cpp -lncurses
+	g++ main.cpp character.cpp equipment.cpp map.cpp -lncurses
 
 test: 
 	g++ test.cpp character.cpp equipment.cpp -o test

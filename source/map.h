@@ -4,12 +4,19 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <ncurses.h>
+
+using namespace std;
 
 class Map{
-                //initialises a vector of vectors with area 15 by 15
-    std::vector< std::vector<std::string> > mapLayout(15, std::vector<std::string>(15));
+                
+	int rows, cols, pages;
+    char ***map;
 public:
-    void displayMap();
+    void displayMap(WINDOW*, int);
+    void createMap();
+    Map(int rows, int cols, int pages);
+    ~Map();
 };
 
-#endif
+#endif // MAP_H

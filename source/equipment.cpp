@@ -7,6 +7,9 @@ Weapon::Weapon(std::string name, int damage, double missChance)
 	this->missChance = missChance;
 }
 
+Weapon::Weapon()
+{}
+
 void Weapon::equipt()
 {
 
@@ -16,6 +19,8 @@ Knife::Knife(std::string name, std::string symbol, int damage, double missChance
 {
 	this->symbol = symbol;
 }
+Knife::Knife()
+{}
 
 std::string Knife::getSymbol()
 {

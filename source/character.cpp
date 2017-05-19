@@ -22,18 +22,19 @@ int Player::attack(){
 
 void Player::move(){
 			//WASD movemnt keys cause easier i think and way not, AAA games do it
+	char directionInput;
 	std::cin >> directionInput;
 	switch(directionInput){
-		case w:
+		case 'w':
 			positionY += 1;
 			break;
-		case a:
+		case 'a':
 			positionX -= 1;
 			break;
-		case s:
+		case 's':
 			positionY -= 1;
 			break;
-		case d:
+		case 'd':
 			positionX += 1;
 			break;
 	}
