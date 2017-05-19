@@ -53,7 +53,7 @@ void Map::createMap()
 				}else if( (k==0) || (k==cols-1) ) {
 					map[i][j][k] = '_';
 				}else{
-					map[i][j][k] = '*';
+					map[i][j][k] = ' ';
 				}
 			}
 

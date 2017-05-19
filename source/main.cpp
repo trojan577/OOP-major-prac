@@ -129,18 +129,23 @@ int main(int argc, char **argv)
 			box(win[2], 0, 0);
 
 			string name;// some way of getting a name from the user
+			// Creating a character
+			mvwprintw(win[2], 1, 1, "Please enter a name for your character: ");
+			refreshWins(win, 3);
+			string cName = getString(win[2]);
+			Player p1(cName, 100);
+			mvwprintw(win[0], 1, 1, p1.getName().c_str());
+			
+			mvwprintw(win[2], 2, 1, "You start with a butterknife");
 
-			Player player1(name, 101);
-			mvwprintw(win[2], 1, 1, "You start with a butterknife");
-
-			Knife butterknife("butterknife", "=---", 1, 0.5);
+			Knife butterknife("butterknife", "=---", 1, 1);
 
 			mvwprintw(inventory[0], 1, 1, butterknife.getSymbol().c_str());
 			refreshWins(inventory, 6);
 			refreshWins(win, 3);	
 
 			wgetch(stdscr);
-			mvwprintw(win[2], 2, 1, "and a spoon");
+			mvwprintw(win[2], 3, 1, "and a spoon");
 
 			Knife spoon("spoon", "O---", 1, 1);
 		
@@ -152,19 +157,20 @@ int main(int argc, char **argv)
 			Map map(40, 15, 3);
 			map.createMap();
 			map.displayMap(win[1], 1);
-			mvwprintw(win[2], 4, 1, "This is the map");
+			mvwprintw(win[2], 5, 1, "This is the map");
 			refreshWins(win, 3);
 
-			// Creating a character
-			mvwprintw(win[2], 6, 1, "Please enter a name for your character: ");
-			refreshWins(win, 3);
-			string cName = getString(win[2]);
-			Player p1(cName, 100);
-			mvwprintw(win[0], 1, 1, p1.getName().c_str());
+			
+			
+			//box(win[0],0,0);
+			//drawLoadout(win[0], win1Size);
 			refreshWins(win, 3);
 
 			runOnce = false;
 		}
+		/* Main game code goes hgere*/
+	
+
 
 	}
 	deleteWin(inventory, 6);
@@ -266,9 +272,9 @@ WINDOW** drawLoadout(WINDOW* win, sizeMax winSize)
 	{
 		// 5 high 5 across
 		if(i < 4)
-			*(inventory + i) = newwin(3, 6, 1+3*i, 12);
+			*(inventory + i) = newwin(3, 6, 2+3*i, 12);
 		else
-			*(inventory + i) = newwin(3, 6, 1+3*(i%4), 12+6);
+			*(inventory + i) = newwin(3, 6, 2+3*(i%4), 12+6);
 		box(inventory[i], 0, 0);
 		wrefresh(*(inventory + i ));
 	}
