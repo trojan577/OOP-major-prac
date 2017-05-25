@@ -39,6 +39,12 @@ string getString(WINDOW *);
 /* Function to delete windows */
 void deleteWin(WINDOW**, int);
 
+/* Function to update players position on the map */
+void drawCharacter(WINDOW*, Player*);
+
+/* Function to remove players position on the map */
+void removeCharacter(WINDOW*, Player*);
+
 int main(int argc, char **argv)
 {
 	/*=====SETUP BEGIN=====*/
@@ -107,13 +113,15 @@ int main(int argc, char **argv)
 	}while(!finished);
 
 	// Getting data for inventory boxes
-	WINDOW ** inventory = drawLoadout(win[0], win1Size);
+	WINDOW **inventory = drawLoadout(win[0], win1Size);
 	refreshWins(win, 3);
 
 	// Main game loop
 	finished = false;
 	bool runOnce = true;
 	char c;
+	Player *p1 = new Player("unnamed", 100);
+	Map *map = new Map(45, 16, 3);		// Map(width, height, pages)
 	while(!finished)
 	{
 		// To quit the game press q at anytime
@@ -122,20 +130,20 @@ int main(int argc, char **argv)
 		{
 			finished = true;
 		}
-
+		
 		if(runOnce == true)
 		{
 			werase(win[2]);
 			box(win[2], 0, 0);
 
-			string name;// some way of getting a name from the user
 			// Creating a character
 			mvwprintw(win[2], 1, 1, "Please enter a name for your character: ");
 			refreshWins(win, 3);
 			string cName = getString(win[2]);
-			Player p1(cName, 100);
-			mvwprintw(win[0], 1, 1, p1.getName().c_str());
-
+			p1->setName(cName);
+			WINDOW *nameWin = newwin(1, 20, 1, 1);
+			mvwprintw(nameWin, 0, 0, p1->getName().c_str());
+			wrefresh(nameWin);
 			mvwprintw(win[2], 2, 1, "You start with a butterknife");
 
 			Knife butterknife("butterknife", "=---", 1, 1);
@@ -154,13 +162,10 @@ int main(int argc, char **argv)
 			refreshWins(win, 3);
 
 			// Making a map
-			Map map(40, 15, 3);
-			map.createMap();
-			map.displayMap(win[1], 1);
+			map->createMap();
+			map->displayMap(win[1], 0);
 			mvwprintw(win[2], 5, 1, "This is the map");
 			refreshWins(win, 3);
-
-
 
 			//box(win[0],0,0);
 			//drawLoadout(win[0], win1Size);
@@ -169,7 +174,11 @@ int main(int argc, char **argv)
 			runOnce = false;
 		}
 		/* Main game code goes here*/
-
+		
+		p1->move(c, map->getMap());
+		drawCharacter(win[1], p1);
+		refreshWins(win, 3);
+		removeCharacter(win[1], p1);
 
 
 	}
@@ -308,4 +317,18 @@ void deleteWin(WINDOW** win, int n)
 	{
 		delwin(*(win + i));
 	}
+}
+
+void drawCharacter(WINDOW *win, Player* p1)
+{
+	int x = p1->getPlayerPosX();
+	int y = p1->getPlayerPosY();
+	mvwprintw(win, 1+y, 1+x, "@");
+}
+
+void removeCharacter(WINDOW *win, Player* p1)
+{
+	int x = p1->getPlayerPosX();
+	int y = p1->getPlayerPosY();
+	mvwprintw(win, 1+y, 1+x, " ");
 }

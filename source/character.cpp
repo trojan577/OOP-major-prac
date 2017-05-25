@@ -1,5 +1,4 @@
 #include "character.h"
-#include "map.h"
 
 Character::Character(int health) {
 	if(health <= 100)
@@ -8,8 +7,8 @@ Character::Character(int health) {
 
 Player::Player(std::string name, int health) : Character(health){
 	this->name = name;
-	positionX = 20;
-	positionY = 7;
+	positionX = 3;
+	positionY = 3;
 }
 
 int Player::attack(){
@@ -20,24 +19,38 @@ int Player::attack(){
 	*/
 }
 
-void Player::move(){
+void Player::move(char directionInput, char ***map){
 			//WASD movemnt keys cause easier i think and way not, AAA games do it
-	char directionInput;
-	std::cin >> directionInput;
 	switch(directionInput){
 		case 'w':
-			positionY += 1;
+			if(map[0][positionX][positionY-1] == ' ')
+				positionY -= 1;
 			break;
 		case 'a':
-			positionX -= 1;
+			if(map[0][positionX-1][positionY] == ' ')
+				positionX -= 1;
 			break;
 		case 's':
-			positionY -= 1;
+			if(map[0][positionX][positionY+1] == ' ')
+				positionY += 1;
 			break;
 		case 'd':
-			positionX += 1;
+			if(map[0][positionX+1][positionY] == ' ')
+				positionX += 1;
 			break;
 	}
+}
+
+void Player::setName(std::string name){
+	this->name = name;
+}
+
+int Player::getPlayerPosY(){
+	return positionY;
+}
+
+int Player::getPlayerPosX(){
+	return positionX;
 }
 
 bool Player::miss(){

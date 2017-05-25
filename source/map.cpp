@@ -50,8 +50,11 @@ void Map::createMap()
 			for(unsigned int k = 0; k < cols; ++k)			{
 				if ( (j==0) || (j==rows-1) ) {
 					map[i][j][k] = '|';
+					if((k==0) || (k==cols-1))
+						map[i][j][k] = '+';
 				}else if( (k==0) || (k==cols-1) ) {
-					map[i][j][k] = '_';
+					map[i][j][k] = '-';
+
 				}else{
 					map[i][j][k] = ' ';
 				}
@@ -59,5 +62,23 @@ void Map::createMap()
 
 		}
 	}
+
+	map[0][2][10] = '#';
+	map[0][3][10] = '#';
+	map[0][3][11] = '#';
+	map[0][5][5] = '#';
+	map[0][5][6] = '#';
+	for(int i = 12; i < 35; ++i){
+		map[0][i][12] = '#';
+		map[0][i][2] = '#';
+	}
+	for(int i = 5; i < 13; ++i){
+		map[0][20][i] = '#';
+		map[0][25][i-3] = '#';
+	}
 }
 
+char*** Map::getMap()
+{
+	return map;
+}

@@ -15,6 +15,7 @@ class Map{
 public:
     void displayMap(WINDOW*, int);
     void createMap();
+    char*** getMap();
     Map(int rows, int cols, int pages);
     ~Map();
 };

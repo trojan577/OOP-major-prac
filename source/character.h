@@ -4,13 +4,15 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "map.h"
+#include "equipment.h"
 
 class Character{
 public:
     Character(int health);
 	//pure virtual functions
     virtual int attack() = 0;
-    virtual void move() = 0;
+    virtual void move(char, char***) = 0;
     virtual bool miss() = 0;
 protected:
     std::string name;
@@ -27,13 +29,18 @@ public:
     int isHealth();         	// tells user current health
     std::vector<std::string> isEquipment();  // returns list of items in qeuiptment vector
     int attack();       		// attacks in some way
-    void move();        		// moves charactor, may need either fucntion for each direction
+    void move(char, char***);        		// moves charactor, may need either fucntion for each direction
                         		// or take keyvoard input as argument
     bool miss();       			// returns whther or not they hit based in missChance
     std::string getName();           // returns the players name
+    void setName(std::string);
+    int getPlayerPosY();
+    int getPlayerPosX();
 private:
 	std::vector<std::string> equipment;	// starts with weapon called Knife
                 						// buidins vecor of length 1, can increase length (unintelligible-jonathan)
+    int positionY;
+    int positionX;
 };
 
 class Enemy : public Character{
