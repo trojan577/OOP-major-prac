@@ -40,7 +40,7 @@ string getString(WINDOW *);
 void deleteWin(WINDOW**, int);
 
 int main(int argc, char **argv)
-{	
+{
 	/*=====SETUP BEGIN=====*/
 	// Setting up ncurses parameters
 	initialize();
@@ -89,10 +89,10 @@ int main(int argc, char **argv)
 		werase(win[2]);
 		box(win[2], 0, 0);
 		selected = menu(win[2], options);
-		mvwprintw(win[2], 1, 1, "You chose: %s", options[selected].c_str());	// for debugging	
+		mvwprintw(win[2], 1, 1, "You chose: %s", options[selected].c_str());	// for debugging
 		wrefresh(win[2]);
 		switch (selected)
-		{	
+		{
 			case 0:			// They chose play
 				finished = true;
 				break;
@@ -105,9 +105,9 @@ int main(int argc, char **argv)
 		}
 
 	}while(!finished);
-	
+
 	// Getting data for inventory boxes
-	WINDOW ** inventory = drawLoadout(win[0], win1Size); 
+	WINDOW ** inventory = drawLoadout(win[0], win1Size);
 	refreshWins(win, 3);
 
 	// Main game loop
@@ -135,20 +135,20 @@ int main(int argc, char **argv)
 			string cName = getString(win[2]);
 			Player p1(cName, 100);
 			mvwprintw(win[0], 1, 1, p1.getName().c_str());
-			
+
 			mvwprintw(win[2], 2, 1, "You start with a butterknife");
 
 			Knife butterknife("butterknife", "=---", 1, 1);
 
 			mvwprintw(inventory[0], 1, 1, butterknife.getSymbol().c_str());
 			refreshWins(inventory, 6);
-			refreshWins(win, 3);	
+			refreshWins(win, 3);
 
 			wgetch(stdscr);
 			mvwprintw(win[2], 3, 1, "and a spoon");
 
 			Knife spoon("spoon", "O---", 1, 1);
-		
+
 			mvwprintw(inventory[1], 1, 1, spoon.getSymbol().c_str());
 			refreshWins(inventory, 6);
 			refreshWins(win, 3);
@@ -160,16 +160,16 @@ int main(int argc, char **argv)
 			mvwprintw(win[2], 5, 1, "This is the map");
 			refreshWins(win, 3);
 
-			
-			
+
+
 			//box(win[0],0,0);
 			//drawLoadout(win[0], win1Size);
 			refreshWins(win, 3);
 
 			runOnce = false;
 		}
-		/* Main game code goes hgere*/
-	
+		/* Main game code goes here*/
+
 
 
 	}
@@ -178,7 +178,7 @@ int main(int argc, char **argv)
 
 	endwin();		// Closes stdscr and returns the terminal
 
-	return 0; 
+	return 0;
 }
 
 sizeMax getWinSize(WINDOW *win)
@@ -259,7 +259,7 @@ void printHelp(WINDOW *win, sizeMax win3Size)
 
 WINDOW** drawLoadout(WINDOW* win, sizeMax winSize)
 {
-	mvwprintw(win, 2, 1, "¯\\_( )_/¯");
+	mvwprintw(win, 2, 1, " \\_( )_/ ");
 	mvwprintw(win, 3, 1, "    |    ");
 	mvwprintw(win, 4, 1, "    |    ");
 	mvwprintw(win, 5, 1, "   / \\   ");
@@ -282,7 +282,7 @@ WINDOW** drawLoadout(WINDOW* win, sizeMax winSize)
 }
 
 void refreshWins(WINDOW **wins, int n)
-{	
+{
 	for(unsigned int i = 0; i < n; ++i)
 		wrefresh(*(wins + i));
 }
@@ -297,7 +297,7 @@ string getString(WINDOW* win)
 		c = wgetch(win);
 		input.push_back(c);
 
-	}while(c != '\n');		// While not pressed enter	
+	}while(c != '\n');		// While not pressed enter
 	noecho();
 	return input;
 }
@@ -306,6 +306,6 @@ void deleteWin(WINDOW** win, int n)
 {
 	for(unsigned int i = 0; i < n; ++i)
 	{
-		delwin(*(win + i));	
+		delwin(*(win + i));
 	}
 }

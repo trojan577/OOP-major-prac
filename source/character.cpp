@@ -8,8 +8,8 @@ Character::Character(int health) {
 
 Player::Player(std::string name, int health) : Character(health){
 	this->name = name;
-	positionX = 15;
-	positionY = 1;
+	positionX = 20;
+	positionY = 7;
 }
 
 int Player::attack(){
